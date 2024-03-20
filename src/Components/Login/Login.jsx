@@ -1,5 +1,8 @@
 import React,{useState, useEffect} from "react";
 import { Link } from "react-router-dom";
+import { LoginUser } from "../../Apis/Auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import joblistimg from '../../assets/joblisting.png'
 const Login = () => {
 
@@ -10,10 +13,15 @@ const Login = () => {
   const HandleFormChange =(e)=>{
     setUserDetails({...UserDetails,[e.target.name]:e.target.value})
   }
-  const HandleSubmit =()=>{
+  const HandleSubmit = async ()=>{
     if( !UserDetails.email ||  !UserDetails.password ){
-      alert("Fields can't be empty")
+      toast.error("Fields can't be empty",{position:"top-center"})
+      return
     }
+    const responce = await LoginUser({...UserDetails})
+    toast.success(responce.message,{position:"top-center"})
+    
+
   }
   return (
     <div className="flex flex-wrap">
@@ -69,6 +77,7 @@ const Login = () => {
         </h1>
         <img src={joblistimg} className="w-full h-full" alt="" />
       </div>
+      <ToastContainer />
     </div>
   );
 };

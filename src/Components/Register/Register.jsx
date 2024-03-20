@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast,ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import joblistimg from '../../assets/joblisting.png'
+import { RegisterUser } from "../../Apis/Auth";
+
 const Register = () => {
+  
   const [UserDetails , setUserDetails] = useState({
     name:'', email:'', mobile:'' , password:''
   })
@@ -10,12 +15,17 @@ const Register = () => {
       setUserDetails({...UserDetails,[e.target.name]:e.target.value})
   }
 
-  const HandleSubmit =()=>{
+  const HandleSubmit = async ()=>{
     if(!UserDetails.name || !UserDetails.email || !UserDetails.mobile || !UserDetails.password ){
-      alert("Fields can't be empty")
+    toast.error("Fields can't be empty",{position:"top-center"})
+      
+      return
     }
+    const responce = await RegisterUser({...UserDetails})
+    toast.success(responce.message,{position:"top-center"})
+   
   }
-
+ 
   return (
     <div className="flex flex-wrap">
       <div className="w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-2/4 ">
@@ -46,7 +56,7 @@ const Register = () => {
             <input
               className="w-full text-xl text-slate-600 h-16 p-3 border-2 outline-none rounded"
               type="number"
-              name="number"
+              name="mobile"
               placeholder="Number"
               onChange={HandleChange}
             />
@@ -84,6 +94,7 @@ const Register = () => {
         </h1>
         <img src={joblistimg} className="w-full h-full" alt="" />
       </div>
+      <ToastContainer />
     </div>
   );
 };
