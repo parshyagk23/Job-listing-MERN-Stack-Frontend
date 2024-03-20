@@ -9,20 +9,34 @@ const Login = () => {
   const [UserDetails , setUserDetails] = useState({
      email:'' , password:''
   })
+  const [error , setError] = useState("Something went Wrong")
 
   const HandleFormChange =(e)=>{
     setUserDetails({...UserDetails,[e.target.name]:e.target.value})
   }
   const HandleSubmit = async ()=>{
-    if( !UserDetails.email ||  !UserDetails.password ){
+    if( !UserDetails.email && !UserDetails.password ){
       toast.error("Fields can't be empty",{position:"top-center"})
       return
+    }else if(!UserDetails.email){
+      toast.error("Email field require",{position:"top-center"})
+      return
+    }else if(!UserDetails.password){
+      toast.error("Password field require",{position:"top-center"})
+      return
     }
-    const responce = await LoginUser({...UserDetails})
-    toast.success(responce.message,{position:"top-center"})
+    const responce = await LoginUser({...UserDetails},setError)
     
-
+    if(!responce){
+      toast.error(error,{position:"top-center"})
+      return
+    }
+    localStorage.setItem('UserName',responce.name)
+    localStorage.setItem('Token',responce.token)
+    toast.success(responce.message,{position:"top-center"})
+  
   }
+  console.log()
   return (
     <div className="flex flex-wrap">
       <div className="w-full sm:w-full md:w-1/2 lg:w-1/2 xl:w-2/4 ">

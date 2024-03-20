@@ -10,6 +10,7 @@ const Register = () => {
   const [UserDetails , setUserDetails] = useState({
     name:'', email:'', mobile:'' , password:''
   })
+  const [error , setError] = useState("Something went Wrong")
 
   const HandleChange =(e)=>{
       setUserDetails({...UserDetails,[e.target.name]:e.target.value})
@@ -17,12 +18,16 @@ const Register = () => {
 
   const HandleSubmit = async ()=>{
     if(!UserDetails.name || !UserDetails.email || !UserDetails.mobile || !UserDetails.password ){
-    toast.error("Fields can't be empty",{position:"top-center"})
-      
+      toast.error("Fields can't be empty",{position:"top-center"})
       return
     }
-    const responce = await RegisterUser({...UserDetails})
+    const responce = await RegisterUser({...UserDetails},setError)
+    if(!responce){
+      toast.error(error,{position:"top-center"})
+      return
+    }
     toast.success(responce.message,{position:"top-center"})
+    
    
   }
  
