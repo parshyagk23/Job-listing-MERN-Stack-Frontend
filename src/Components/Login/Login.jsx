@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import { LoginUser } from "../../Apis/Auth";
 import { ToastContainer, toast } from "react-toastify";
@@ -31,8 +31,7 @@ const Login = () => {
       toast.error(error,{position:"top-center"})
       return
     }
-    localStorage.setItem('UserName',responce.name)
-    localStorage.setItem('Token',responce.token)
+    
     toast.success(responce.message,{position:"top-center"})
   
   }

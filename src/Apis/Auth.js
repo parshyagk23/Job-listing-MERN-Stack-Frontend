@@ -9,8 +9,7 @@ export const RegisterUser =async ({name , email, mobile, password},setError) =>{
         return responce.data
         
     } catch (error) {
-        setError(error.message)
-        
+        setError(error.message)     
     }
 }
 
@@ -18,6 +17,9 @@ export const LoginUser = async ({email,password},setError) =>{
     try {
         const reqUrl = `${AuthBackendURL}/login`
         const responce = await axios.post(reqUrl,{email,password})
+        localStorage.setItem('token',responce.data.token)
+        localStorage.setItem('userName',responce.data.name)
+        localStorage.setItem('userId',responce.data.userId)
         return responce.data
         
     } catch (error) {
