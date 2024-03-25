@@ -1,11 +1,15 @@
 
 import React,{useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 const Navbar = () => {
-  const [isLoggedIn] = useState(!!localStorage.getItem('token'))
+  const token = Cookies.get('token')
+  const [isLoggedIn] = useState(!!token)
   const navigate = useNavigate()
   const handleLogout = () =>{
-    localStorage.clear()
+    Cookies.remove('token')
+    Cookies.remove('userName')
+    Cookies.remove('userId')
     navigate('/login')
   }
 
@@ -24,9 +28,9 @@ const Navbar = () => {
           <Link to='/register' className=" border-white rounded-lg  text-red-500 border-2  bg-white px-2  font-medium text-2xl text-center cursor-pointer xs:text-xl ">
             Register
           </Link>
-        </div>:<div className="flex gap-3 items-start ">
-          <div  className="  rounded-lg  px-2 mr-3 text-white font-medium text-2xl text-center cursor-pointer xs:text-xl ">
-          {localStorage.getItem('userName')}
+        </div>:<div className="flex gap-3 items-start xs:gap-1 ">
+          <div  className="  rounded-lg  mr-3 text-white font-medium text-2xl text-center cursor-pointer xs:text-base xs:mr-0">
+          {Cookies.get('userName')}
           </div>
           <button onClick={handleLogout} className=" border-white rounded-lg  text-red-500 border-2  bg-white px-2  font-medium text-2xl text-center cursor-pointer xs:text-xl ">
             logout

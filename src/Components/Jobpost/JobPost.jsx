@@ -1,5 +1,5 @@
 import React, {  useState } from 'react'
-import { CreatejobPost, updateJobDetails } from '../../Apis/Job';
+import { CreatejobPost, updateJobPost } from '../../Apis/Job';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {DEFAULT_SKILLS } from '../../utils/Consants'
@@ -72,7 +72,7 @@ const JobPost = () => {
       if(state?.edit){
         const userid = localStorage.getItem('userId')
         
-        await updateJobDetails(stateData?._id, formData, userid)
+        await updateJobPost(stateData?._id, formData, userid)
         toast.success("Job updated successfully",{position:"top-center"})
         setFromData({
           CompanyName:"",

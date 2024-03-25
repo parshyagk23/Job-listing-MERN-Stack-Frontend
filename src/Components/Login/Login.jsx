@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { LoginUser } from "../../Apis/Auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,7 +10,7 @@ const Login = () => {
      email:'' , password:''
   })
   const [error , setError] = useState("Something went Wrong")
-
+  const navigate= useNavigate()
   const HandleFormChange =(e)=>{
     setUserDetails({...UserDetails,[e.target.name]:e.target.value})
   }
@@ -33,7 +33,7 @@ const Login = () => {
     }
     
     toast.success(responce.message,{position:"top-center"})
-  
+    navigate('/')
   }
   console.log()
   return (

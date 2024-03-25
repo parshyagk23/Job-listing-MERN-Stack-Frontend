@@ -3,9 +3,11 @@ import { DEFAULT_SKILLS } from '../../utils/Consants'
 import { getAllJobPost } from '../../Apis/Job'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import JobView from '../JobView/JobView';
 const Home = () => {
     const [Skill, setSkills] = useState([])
     const [title, setTitle] = useState()
+    const [jobDetail, setJobDetail] = useState()
     const AddSkill =(e)=>{
       const selectedSkill = e.target.value
       if(selectedSkill=== 'Skills') return
@@ -27,15 +29,18 @@ const Home = () => {
       }
       const filteredSkill = Skill.join(",")
       const responce = await getAllJobPost({title,skill:filteredSkill});
-      console.log(responce)
+      
       if(!responce){
         toast.error("Job not found",{position:"top-center"})
         return
       }
+      setJobDetail(responce.data)
+      
     }
     
     
   return (
+    <div>
     <main className="w-11/12 mx-16   my-auto mt-36 p-8 px-14 shadow-lg hover:shadow-rose-500 rounded-sm md:mx-8 lg:mx-12 xs:mx-4 xs:p-2 xs:w-11/12
      ">
         <div className="flex gap-4 border-2 border-slate-400 rounded-lg p-2">
@@ -77,6 +82,16 @@ const Home = () => {
         </section>
         <ToastContainer />
       </main>
+        {jobDetail?.map((job,index)=>(
+          <div key={index} >
+            <JobView job={job} />
+          </div>
+        ))}
+     
+          
+      
+     
+      </div>
   )
 }
 

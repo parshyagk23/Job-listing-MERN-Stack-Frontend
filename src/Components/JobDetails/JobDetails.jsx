@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams,useNavigate } from "react-router-dom";
-import { getJobDetails } from "../../Apis/Job";
+import { useParams,useNavigate } from "react-router-dom";
+import { getJobPost } from "../../Apis/Job";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 import companylogo from "../../assets/companylogo.png";
 
 const JobDetails = () => {
@@ -10,7 +11,9 @@ const JobDetails = () => {
   const [Jobdetail, setJobdetails] = useState()
   const navigate = useNavigate()
   const [isEditable ,setIsEditable] = useState()
-  const [isLoggedIn] = useState(!!localStorage.getItem('token'))
+  const token = Cookies.get('token')
+  
+  const [isLoggedIn] = useState(!!token)
   useEffect(()=>{
     fetchJobDetailsById()
   },[])
@@ -18,7 +21,7 @@ const JobDetails = () => {
   const fetchJobDetailsById = async ()=>{
     try {
       if(!id) return
-      const responce = await getJobDetails(id)
+      const responce = await getJobPost(id)
       setJobdetails(responce.data)
       setIsEditable(responce.isEditable)
     } catch (error) {
@@ -26,9 +29,7 @@ const JobDetails = () => {
     }
 
   }
- useEffect(()=>{
-  
- },[])
+ 
  const timeAgo =( dateString) =>{
   const date = new Date(dateString);
   const seconds = Math.floor((new Date()- date)/1000);
@@ -57,40 +58,37 @@ const JobDetails = () => {
   }
  }
   return (
-    <main className="pt-20 pb-16">
+    <>
+   {Jobdetail? (<main className="pt-20 pb-16">
       <section className="w-9/12 h-24 mx-40 mt-10 bg-slate-100 md:mx-24 xs:w-11/12 xs:mx-4 ">
         
-          {Jobdetail?(<h1 className="font-medium text-3xl text-center pt-3 rounded-md xs:text-xl " >
-                        {Jobdetail.JobPosition} work from {Jobdetail.LocationType} {Jobdetail.JobType==='full time '?'job':'internship '}
-                         at {Jobdetail.CompanyName}
-                    </h1>):
-                     (<h1 className="font-medium text-3xl text-center pt-3 rounded-md xs:text-xl" >WordPress Development work from home job/internship at Adyaka Infosec
-                     Private Limited</h1>) 
-          }
+          <h1 className="font-medium text-3xl text-center pt-3 rounded-md xs:text-xl " >
+          {Jobdetail.JobPosition} work from {Jobdetail?.LocationType} {Jobdetail.JobType==='full time '?'job':'internship'}
+                         at {Jobdetail?.CompanyName}
+                    </h1>
+                     
+          
         
       </section>
       <section className="w-4/5 bg-slate-100 mt-10 mx-32 p-8 md:mx-20  xs:w-11/12 xs:mx-4 ">
         <div className="flex gap-2">
-        {Jobdetail?<h4 className="text-slate-300 text-center text-xl font-medium" >
-           {timeAgo(Jobdetail.UpdatedAt)}
-           </h4>:<h4 className="text-slate-300 text-center text-xl font-medium" >Full Time</h4>} 
-           {Jobdetail?<h4 className="text-slate-300 text-center text-xl font-medium" >
-           {Jobdetail.JobType}
-           </h4>:<h4 className="text-slate-300 text-center text-xl font-medium" >Full Time</h4>} 
+        <h4 className="text-slate-300 text-center text-xl font-medium xs:text-lg " >
+           {timeAgo(Jobdetail?.UpdatedAt)}
+           </h4>
+           <h4 className="text-slate-300 text-center text-xl font-medium xs:text-lg" >
+           {Jobdetail?.JobType}
+           </h4>
           
           <img src={Jobdetail?Jobdetail.logoUrl:companylogo} width="30px" height="30px" alt="" />
-          {Jobdetail?<h4 className="text-slate-300 text-center text-xl font-medium" >
-           {Jobdetail.CompanyName}
-           </h4>:<h4 className="text-slate-300 text-center text-xl font-medium" >Google</h4>} 
+          <h4 className="text-slate-300 text-center text-xl font-medium xs:text-lg" >
+           {Jobdetail?.CompanyName}
+           </h4>
         </div>
         <div className="flex justify-between">
-          {Jobdetail?
+          
           <h1 className="font-bold text-4xl text-center">
-          {Jobdetail.JobPosition}
-          </h1>:
-          <h1 className="font-bold text-4xl text-center">
-            WordPress Development
-          </h1>}
+          {Jobdetail?.JobPosition}
+          </h1>
           
             {isLoggedIn && isEditable &&  <div className="w-40 bg-red-500 rounded-md p-2 text-center "><button className=" text-xl font-medium text-white" 
             onClick={()=>{
@@ -104,11 +102,9 @@ const JobDetails = () => {
          
         </div>
         <div className="mt-1">
-          {Jobdetail?<h1 className="font-medium text-xl  text-red-500">
-           {Jobdetail.Location} | India
-          </h1>:<h1 className="font-medium text-xl  text-red-500">
-            Bangalore | India
-          </h1>}
+          <h1 className="font-medium text-xl  text-red-500">
+           {Jobdetail?.Location} | India
+          </h1>
         </div>
         <div className="flex gap-7 mt-3">
           <div>
@@ -127,8 +123,8 @@ const JobDetails = () => {
               </svg>
               <h5 className="font-normal text-lg text-slate-400" >Stipend</h5>
             </span>
-            {Jobdetail?<h1 className="font-medium text-xl text-slate-600" >{Jobdetail.MonthlySalary}/month</h1>:
-            <h1 className="font-medium text-xl text-slate-800" >15000/month</h1>}
+            <h1 className="font-medium text-xl text-slate-600" >{Jobdetail?.MonthlySalary}/month</h1>
+            
           </div>
           <div>
             <span className="flex gap-3 items-center ">
@@ -146,64 +142,49 @@ const JobDetails = () => {
               </svg>
               <h5 className="font-normal text-lg text-slate-400"  >Duration</h5>
             </span>
-            {Jobdetail?<h1 className="font-medium text-xl text-slate-600" >{Jobdetail.JobType}</h1>:
-            <h1 className="font-medium text-xl text-slate-800" >6 months</h1>}
+            <h1 className="font-medium text-xl text-slate-600" >{Jobdetail?.JobType}</h1>
+            
           </div>
         </div>
         <section className="mt-5" >
           <h1 className="font-bold text-2xl">About Company</h1>
-          {Jobdetail?<p className="font-normal text-xl text-slate-800  text-left mt-2 ">
-            {Jobdetail.AboutCompany}
-          </p>:
           <p className="font-normal text-xl text-slate-800  text-left mt-2 ">
-          We provide technology-based services to help businesses and
-          organizations achieve their goals. We offer a wide range of
-          services, including software development, system integration,
-          network and security services, cloud computing, and data analytics.
-          Our primary focus is on leveraging technology to streamline business
-          processes, improve productivity, and enhance overall efficiency.
-        </p>}
+            {Jobdetail?.AboutCompany}
+          </p>
         </section>
         <section className="mt-5" >
           <h1 className="font-bold text-2xl">Job Description</h1>
-          {Jobdetail?<p className="font-normal text-xl text-slate-800  text-left mt-2 ">
-            {Jobdetail.JobDescription}
-          </p>:
           <p className="font-normal text-xl text-slate-800  text-left mt-2 ">
-          We provide technology-based services to help businesses and
-          organizations achieve their goals. We offer a wide range of
-          services, including software development, system integration,
-          network and security services, cloud computing, and data analytics.
-          Our primary focus is on leveraging technology to streamline business
-          processes, improve productivity, and enhance overall efficiency.
-        </p>}
+            {Jobdetail?.JobDescription}
+          </p>
         </section>
         <section className="mt-5" >
           <h1 className="font-bold text-2xl">Skill(s) Required</h1>
           <div  className="grid grid-cols-7 gap-4 md:grid-cols-4 lg:grid-cols-6 xs:grid-cols-3  "  >
-          {Jobdetail?Jobdetail.Skills.map((skill,index)=>(
+          {Jobdetail?.Skills.map((skill,index)=>(
             
-              <div key={index} className="w-28 min-h-10 mt-2  rounded-full bg-red-100 font-normal text-slate-700 text-2xl text-center" >{skill}</div>
+              <div key={index} className="w-28 min-h-10 mt-2  rounded-full bg-red-100 font-normal text-slate-700 text-2xl text-center xs:w-20 " >{skill}</div>
 
-              )):
-              <div className="max-w-28 min-h-10 mt-2 rounded-full bg-red-100 font-normal text-slate-700 text-2xl text-center" >html</div>
-            }
+              ))
+              
+          }
             </div>
           
         </section>
         <section className="mt-5" >
           <h1 className="font-bold text-2xl">Additional information</h1>
-          {Jobdetail?<p className="font-normal text-xl text-slate-800  text-left mt-2 ">
-            {Jobdetail.information}
-          </p>:
           <p className="font-normal text-xl text-slate-800  text-left mt-2 ">
-            information
-        </p>}
+            {Jobdetail?.information}
+          </p>
+         
         </section>
         
       </section>
       <ToastContainer />
-    </main>
+    </main>):(<h1 className="text-center text-3xl mt-28 font-bold " > JobDetail Not Found</h1>)}
+    </>
+    
+     
   );
 };
 
