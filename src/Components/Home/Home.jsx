@@ -37,6 +37,10 @@ const Home = () => {
       setJobDetail(responce.data)
       
     }
+    const handleClear =()=>{
+      setSkills([])
+      setTitle("")
+    }
     
     
   return (
@@ -77,7 +81,7 @@ const Home = () => {
           </div>
           <div className="h-fit flex gap-8 mt-4">
             <button className="rounded px-5 py-2 bg-red-500 text-white font-medium text-xl xs:px-3 xs:py-1 xs:text-lg " onClick={handleApplyFilter} >Apply Filter</button>
-            <button className="text-red-400 font-medium text-xl  xs:text-lg " >Clear</button>
+            <button className="text-red-400 font-medium text-xl  xs:text-lg " onClick={handleClear} >Clear</button>
           </div>
         </section>
         <ToastContainer />
