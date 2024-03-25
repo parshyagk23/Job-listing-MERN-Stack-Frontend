@@ -12,17 +12,17 @@ const JobPost = () => {
   const [stateData] = useState(state?.jobDetails);
   const [formData ,setFromData] = useState({
     
-          CompanyName:"" || stateData.CompanyName , 
-          logoUrl:"" || stateData.logoUrl ,
-          JobPosition:"" || stateData.JobPosition ,
-          MonthlySalary:"" || stateData.MonthlySalary ,
-          JobType:"" || stateData.JobType ,
-          LocationType:"" || stateData.LocationType ,
-          Location:"" || stateData.Location ,
-          JobDescription:"" || stateData.JobDescription ,
-          AboutCompany:"" || stateData.AboutCompany ,
-          Skills:stateData.Skills||[],
-          information:"" || stateData.information 
+          CompanyName:"" || stateData?.CompanyName , 
+          logoUrl:"" || stateData?.logoUrl ,
+          JobPosition:"" || stateData?.JobPosition ,
+          MonthlySalary:"" || stateData?.MonthlySalary ,
+          JobType:"" || stateData?.JobType ,
+          LocationType:"" || stateData?.LocationType ,
+          Location:"" || stateData?.Location ,
+          JobDescription:"" || stateData?.JobDescription ,
+          AboutCompany:"" || stateData?.AboutCompany ,
+          Skills:stateData?.Skills||[],
+          information:"" || stateData?.information 
   })
 
 
@@ -60,6 +60,7 @@ const JobPost = () => {
     }
 
     const HandleSubmit = async ()=>{
+      try{
       if(
           !formData.CompanyName || !formData.logoUrl || !formData.AboutCompany ||
           !formData.JobDescription || !formData.JobPosition || !formData.JobType ||
@@ -72,7 +73,11 @@ const JobPost = () => {
       if(state?.edit){
         const userid = localStorage.getItem('userId')
         
-        await updateJobPost(stateData?._id, formData, userid)
+        const responce= await updateJobPost(stateData?._id, formData, userid)
+        if(!responce){
+          toast.error("Something went wrong",{position:"top-center"})
+          return
+        }
         toast.success("Job updated successfully",{position:"top-center"})
         setFromData({
           CompanyName:"",
@@ -95,10 +100,14 @@ const JobPost = () => {
         return
       }
       toast.success("Job create successfully",{position:"top-center"})
-     
-        
-
+      setTimeout(() => {
+        navigate('/')
+      }, 2000);
+    }catch(error){
+      toast.error("Something went wrong",{position:"top-center"})
     }
+    }
+
    
 
   return (
@@ -340,7 +349,7 @@ const JobPost = () => {
             </div>
             <div className="flex gap-3 justify-end" >
               <button className="w-36 rounded-md border-2 border-slate-400 text-slate-600  font-medium text-lg p-1 " onClick={HandleClear} >Cancel</button>
-              <button className="w-36 rounded-md bg-red-500 text-white text-center font-medium text-lg p-1 "  onClick={HandleSubmit}  >{state.edit?'+ Edit job':'+ Add job'}</button>
+              <button className="w-36 rounded-md bg-red-500 text-white text-center font-medium text-lg p-1 "  onClick={HandleSubmit}  >{state?.edit?'+ Edit job':'+ Add job'}</button>
             </div>
           </div>
         </div>

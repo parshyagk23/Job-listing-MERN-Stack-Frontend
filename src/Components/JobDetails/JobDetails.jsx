@@ -63,14 +63,12 @@ const JobDetails = () => {
       <section className="w-9/12 h-24 mx-40 mt-10 bg-slate-100 md:mx-24 xs:w-11/12 xs:mx-4 ">
         
           <h1 className="font-medium text-3xl text-center pt-3 rounded-md xs:text-xl " >
-          {Jobdetail.JobPosition} work from {Jobdetail?.LocationType} {Jobdetail.JobType==='full time '?'job':'internship'}
+          {Jobdetail.JobPosition} work from {Jobdetail?.LocationType==='Remote'?'Home':'Office'} {Jobdetail.JobType==='full time '?'job':'internship '}
                          at {Jobdetail?.CompanyName}
                     </h1>
-                     
-          
         
       </section>
-      <section className="w-4/5 bg-slate-100 mt-10 mx-32 p-8 md:mx-20  xs:w-11/12 xs:mx-4 ">
+      <section className="w-4/5 bg-slate-100 mt-10 mx-32 p-4 md:mx-20  xs:w-11/12 xs:mx-4 ">
         <div className="flex gap-2">
         <h4 className="text-slate-300 text-center text-xl font-medium xs:text-lg " >
            {timeAgo(Jobdetail?.UpdatedAt)}
@@ -86,11 +84,11 @@ const JobDetails = () => {
         </div>
         <div className="flex justify-between">
           
-          <h1 className="font-bold text-4xl text-center">
+          <h1 className="font-bold text-4xl text-center xs:text-2xl">
           {Jobdetail?.JobPosition}
           </h1>
           
-            {isLoggedIn && isEditable &&  <div className="w-40 bg-red-500 rounded-md p-2 text-center "><button className=" text-xl font-medium text-white" 
+            {isLoggedIn && isEditable &&  <div className="w-40 h-12 bg-red-500 rounded-md p-2 text-center "><button className=" text-xl font-medium text-white" 
             onClick={()=>{
               navigate("/job-post", {
                 state: {
@@ -160,10 +158,10 @@ const JobDetails = () => {
         </section>
         <section className="mt-5" >
           <h1 className="font-bold text-2xl">Skill(s) Required</h1>
-          <div  className="grid grid-cols-7 gap-4 md:grid-cols-4 lg:grid-cols-6 xs:grid-cols-3  "  >
+          <div  className="grid grid-cols-7 gap-1 md:grid-cols-4 lg:grid-cols-6 xs:grid-cols-3  "  >
           {Jobdetail?.Skills.map((skill,index)=>(
             
-              <div key={index} className="w-28 min-h-10 mt-2  rounded-full bg-red-100 font-normal text-slate-700 text-2xl text-center xs:w-20 " >{skill}</div>
+              <div key={index} className="min-h-10 mt-2 rounded-full  font-normal text-slate-700 text-2xl text-start  " >{skill}</div>
 
               ))
               

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast,ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import joblistimg from '../../assets/joblisting.png'
@@ -11,7 +11,7 @@ const Register = () => {
     name:'', email:'', mobile:'' , password:''
   })
   const [error , setError] = useState("Something went Wrong")
-
+  const navigate = useNavigate()
   const HandleChange =(e)=>{
       setUserDetails({...UserDetails,[e.target.name]:e.target.value})
   }
@@ -27,7 +27,9 @@ const Register = () => {
       return
     }
     toast.success(responce.message,{position:"top-center"})
-    
+    setTimeout(() => {
+      navigate('/login')
+    }, 2000);
    
   }
  

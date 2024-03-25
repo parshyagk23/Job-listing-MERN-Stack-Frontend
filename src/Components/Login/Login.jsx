@@ -33,7 +33,9 @@ const Login = () => {
     }
     
     toast.success(responce.message,{position:"top-center"})
-    navigate('/')
+    setTimeout(() => {
+      navigate('/')
+    }, 2000);
   }
   console.log()
   return (

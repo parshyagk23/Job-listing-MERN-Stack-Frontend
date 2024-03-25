@@ -6,7 +6,7 @@ const JobView = ({job}) => {
   
   return (
   job? <main className="flex w-11/12  mx-16 my-auto mt-8 mb-8  shadow-lg hover:shadow-rose-500 rounded-sm pt-3 pb-3 md:mx-8 lg:mx-12 xs:mx-4 xs:p-2 xs:w-11/12 ">
-    <div className="w-2 bg-red-500"></div>
+  
 
     <div className="flex gap-96 md:gap-24 lg:gap-48 mx:gap-36 xs:flex-col xs:gap-8 " >
     <div className="flex gap-4 lg:gap-4 md:gap-0 xs:gap-2 " >

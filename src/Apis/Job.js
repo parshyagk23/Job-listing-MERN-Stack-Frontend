@@ -1,24 +1,30 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const JobBackendURL = import.meta.env.VITE_REACT_APP_JOB_BACKEND_URL
 
 export const CreatejobPost =  async (jobPostPayload)=>{
     try {
         const reqUrl = `${JobBackendURL}/create`
         const token = Cookies.get('token')
-        
         axios.defaults.headers.common['Authorization']=token
         const responce= await axios.post(reqUrl, jobPostPayload)
         return responce.data
         
         
     } catch (error) {
-      if(error.isTokenExpired){
+       
+      if(error.response.data.isTokenExpired){
             Cookies.remove('token')
             Cookies.remove('userName')
             Cookies.remove('userId')
+            setTimeout(() => {
+                toast.error("session expired please login" ,{position:'top-center'} )
+            }, 2000);
             Navigate('/login')
+
+
       }
     }
 }
