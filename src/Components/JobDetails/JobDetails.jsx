@@ -40,9 +40,12 @@ const JobDetails = () => {
       toast.error("Something wend wrong", { position: "top-center" });
     }
   };
-  
+ 
   const fetisJobApplied =async ()=>{
     try {
+      if(!isLoggedIn){
+        return
+      }
       const responce = await getAppliedJob(userId)
       if(!responce){
         toast.error("Something wend wrong", { position: "top-center" });
@@ -50,15 +53,16 @@ const JobDetails = () => {
       }
       
       const AppliedJobs= responce.data
-      
-      AppliedJobs.map((jobs)=>{
-   
-       if(jobs.jobDetails?._id === id){
-        setisApplied(true)
-          return
-       } 
-      })
+      if(isLoggedIn){
 
+        AppliedJobs.map((jobs)=>{
+          
+         if(jobs.jobDetails?._id === id){
+          setisApplied(true)
+            return
+         } 
+        })
+      }
       
     } catch (error) {
         toast.error("Something wend wrong", { position: "top-center" });
