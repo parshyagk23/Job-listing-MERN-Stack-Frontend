@@ -66,7 +66,7 @@ const Navbar = () => {
                         <li  className="w-full h-0.5 bg-white " ></li>
                         {usertype==="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to='/job-post' >Post job</Link> </li>
                         <li  className="w-full h-0.5 bg-white " ></li></>}
-                        {!usertype==="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to= {`/applied-job/${userId}`} >Applied jobs</Link> </li>
+                        {usertype!=="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to= {`/applied-job/${userId}`} >Applied jobs</Link> </li>
                         <li  className="w-full h-0.5 bg-white " ></li></> }
                         {usertype==="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to= {`/postedjobs/${userId}`} >view posted jobs</Link> </li>
                         <li  className="w-full h-0.5 bg-white " ></li></>}
