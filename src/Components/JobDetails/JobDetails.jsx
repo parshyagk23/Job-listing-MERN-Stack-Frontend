@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getJobPost } from "../../Apis/Job";
-import { CreateAppliedJob } from "../../Apis/AppliedJob";
+import { CreateAppliedJob, getAppliedJob } from "../../Apis/AppliedJob";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
@@ -12,16 +12,20 @@ const JobDetails = () => {
   const { id } = useParams();
   const [Jobdetail, setJobdetails] = useState();
   const navigate = useNavigate();
+  const userId = Cookies.get("userId")
   const token = Cookies.get("token");
-  
   const [isEditable, setIsEditable] = useState();
   const [isJobPost, setisJobPost] = useState();
+  const [isApplied, setisApplied] = useState(false)
   
 
   const [isLoggedIn] = useState(!!token);
   useEffect(() => {
     fetchJobDetailsById();
   }, []);
+  useEffect(()=>{
+    fetisJobApplied()
+  },)
 
   const fetchJobDetailsById = async () => {
     try {
@@ -36,6 +40,31 @@ const JobDetails = () => {
       toast.error("Something wend wrong", { position: "top-center" });
     }
   };
+  
+  const fetisJobApplied =async ()=>{
+    try {
+      const responce = await getAppliedJob(userId)
+      if(!responce){
+        toast.error("Something wend wrong", { position: "top-center" });
+        return
+      }
+      
+      const AppliedJobs= responce.data
+      
+      AppliedJobs.map((jobs)=>{
+   
+       if(jobs.jobDetails?._id === id){
+        setisApplied(true)
+          return
+       } 
+      })
+
+      
+    } catch (error) {
+        toast.error("Something wend wrong", { position: "top-center" });
+        
+      }
+  }
 
   const timeAgo = (dateString) => {
     const date = new Date(dateString);
@@ -73,14 +102,10 @@ const JobDetails = () => {
     }
     toast.success(responce.message, { position: "top-center" });
     
-    
-
-    
-    
   };
   
   
- 
+
   return (
     <>
       {Jobdetail ? (
@@ -220,8 +245,8 @@ const JobDetails = () => {
             {isLoggedIn && isJobPost && (
               <div className="flex justify-end">
                 <div className=" w-40 h-12 bg-red-500 rounded-md p-2 text-center ">
-                  <button className=" text-xl font-medium text-white " onClick={handleApplyJob}  >
-                  Apply job
+                  <button className=" text-xl font-medium text-white cursor-pointer " onClick={handleApplyJob} disabled={isApplied} >
+                   {isApplied?" Applied job":" Apply job"}
                   </button>
                 </div>
               </div>

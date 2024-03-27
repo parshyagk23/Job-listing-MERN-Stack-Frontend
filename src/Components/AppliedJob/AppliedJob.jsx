@@ -3,6 +3,8 @@ import Navbar from "../NavBar/Navbar";
 import { useParams } from "react-router-dom";
 import { getAppliedJob } from "../../Apis/AppliedJob";
 import JobView from "../JobView/JobView";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AppliedJob = () => {
   const { userId } = useParams();
@@ -19,7 +21,7 @@ const AppliedJob = () => {
       setLoading(true);
       setAppliedJob(responce.data);
     } catch (error) {
-      console.log(error);
+      toast.error("Something went wrong" ,{position:'top-center'})
     }
   };
 
@@ -37,7 +39,7 @@ const AppliedJob = () => {
       {loading ? (
         AppliedJob?.map((Job, index) => (
           <div key={index}>
-            <JobView job={Job?.jobDetails} link="http://localhost:5173/job-details/" />
+            <JobView job={Job?.jobDetails} link="https://joblisting-six.vercel.app/job-details/" />
           </div>
         ))
       ) : (
