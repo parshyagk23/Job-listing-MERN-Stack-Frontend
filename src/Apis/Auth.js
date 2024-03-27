@@ -2,11 +2,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 const AuthBackendURL = import.meta.env.VITE_REACT_APP_AUTH_BACKEND_URL
 
-export const RegisterUser =async ({name , email, mobile, password},setError) =>{
+export const RegisterUser =async ({name , email, mobile, password,usertype},setError) =>{
 
     try {
         const reqUrl = `${AuthBackendURL}/register`
-        const responce= await axios.post(reqUrl, {name,email,mobile,password})
+        const responce= await axios.post(reqUrl, {name,email,mobile,password,usertype})
         return responce.data
         
     } catch (error) {
@@ -21,7 +21,8 @@ export const LoginUser = async ({email,password},setError) =>{
         Cookies.set("token",responce.data.token)
         Cookies.set("userName",responce.data.name)
         Cookies.set("userId",responce.data.userId)
-
+        Cookies.set("usertype",responce.data.usertype)
+       
        
         return responce.data
         

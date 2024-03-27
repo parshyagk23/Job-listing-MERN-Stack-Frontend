@@ -76,3 +76,18 @@ export const getAllJobPost = async ({title,skill})=>{
             error
         }
 }
+
+export const getJobPostbyrefUserId =  async (refUserId)=>{
+    try {
+        const reqUrl = `${JobBackendURL}/jobrefuser/${refUserId}`
+        const token = Cookies.get('token')
+        
+        axios.defaults.headers.common['Authorization']=token
+        const responce= await axios.get(reqUrl)
+        return responce.data
+        
+        
+    } catch (error) {
+        error
+    }
+}

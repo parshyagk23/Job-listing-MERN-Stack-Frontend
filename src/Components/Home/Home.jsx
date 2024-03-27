@@ -7,7 +7,8 @@ import JobView from '../JobView/JobView';
 const Home = () => {
     const [Skill, setSkills] = useState([])
     const [title, setTitle] = useState()
-    const [jobDetail, setJobDetail] = useState()
+    const [jobDetail, setJobDetail] = useState([])
+    const [loading ,setLoading] = useState(false)
     const AddSkill =(e)=>{
       const selectedSkill = e.target.value
       if(selectedSkill=== 'Skills') return
@@ -22,29 +23,34 @@ const Home = () => {
     }
 
     const handleApplyFilter =async ()=>{
-
+      setLoading(true)
       if(!Skill && !title){
         toast.error("Feild's can't be empty",{position:"top-center"})
         return
       }
+      
       const filteredSkill = Skill.join(",")
       const responce = await getAllJobPost({title,skill:filteredSkill});
       
       if(!responce){
-        toast.error("Job not found",{position:"top-center"})
+        toast.error("Job not found or CONNECTION_ERROR ",{position:"top-center"})
+        setLoading(false)
         return
       }
+      
       setJobDetail(responce.data)
+      setLoading(false)
       
     }
     const handleClear =()=>{
       setSkills([])
       setTitle("")
     }
-    
+   
     
   return (
     <div>
+      
     <main className="w-11/12 mx-16   my-auto mt-36 p-8 px-14 shadow-lg hover:shadow-rose-500 rounded-sm md:mx-8 lg:mx-12 xs:mx-4 xs:p-2 xs:w-11/12
      ">
         <div className="flex gap-4 border-2 border-slate-400 rounded-lg p-2">
@@ -86,14 +92,13 @@ const Home = () => {
         </section>
         <ToastContainer />
       </main>
+      {loading && <div style={{ margin:'0 auto', marginTop:'25px' }} className="w-12 h-12 border-8 rounded-full border-gray-300 border-t-sky-700 animate-spin " > </div>}
         {jobDetail?.map((job,index)=>(
           <div key={index} >
-            <JobView job={job} />
+            
+            <JobView job={job} link="job-details/" />
           </div>
         ))}
-     
-          
-      
      
       </div>
   )

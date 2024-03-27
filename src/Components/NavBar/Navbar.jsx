@@ -5,6 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Navbar = () => {
   const token = Cookies.get("token");
+  const userId  = Cookies.get("userId"); 
+  const usertype=Cookies.get('usertype')
   const [isLoggedIn] = useState(!!token);
   const navigate = useNavigate();
   const [isuserLogoClicked,setisuserLogoClicked] = useState(false)
@@ -12,6 +14,7 @@ const Navbar = () => {
     Cookies.remove("token");
     Cookies.remove("userName");
     Cookies.remove("userId");
+    Cookies.remove("usertype")
     toast.success("logout Successfully", { position: "top-center" });
     setTimeout(() => {
       navigate("/login");
@@ -23,7 +26,7 @@ const Navbar = () => {
       <div>
         <ToastContainer />
         <h1 className="font-bold text-3xl text-center text-white xs:text-2xl ">
-          Jobfinder
+         <Link to='/' > Jobfinder</Link>
         </h1>
       </div>
       {
@@ -56,14 +59,18 @@ const Navbar = () => {
               </svg>
               </div>
               {isuserLogoClicked?(
-                    <div className=" w-64 h-32  bg-red-300 rounded mr-3 xs:w-44 xs:h-28  " >
-                      <ul className="pt-1 mt-3" >
-                        <li className=" rounded-lg mr-3 mb-2 text-white font-medium text-2xl text-center cursor-pointer xs:text-lg xs:mr-0" >
-                        {Cookies.get('userName')}</li>
+                    <div className=" w-64  bg-red-300 rounded mr-3 xs:w-44   " >
+                      <ul className="pt-1 mt-3 pb-1" >
+                        <li className=" rounded-lg mr-3 mb-2 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-lg xs:mr-0" >
+                        <Link to='/' >{Cookies.get('userName')}</Link></li>
                         <li  className="w-full h-0.5 bg-white " ></li>
-                        <li className="  border-white mb-2 bottom-2 mr-3 text-white font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to='job-post' >Post job</Link> </li>
-                        <li  className="w-full h-0.5 bg-white " ></li>
-                        <li className=" rounded-lg  mr-3  text-white font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" onClick={handleLogout} >Logout</li>
+                        {usertype==="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to='/job-post' >Post job</Link> </li>
+                        <li  className="w-full h-0.5 bg-white " ></li></>}
+                        {!usertype==="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to= {`/applied-job/${userId}`} >Applied jobs</Link> </li>
+                        <li  className="w-full h-0.5 bg-white " ></li></> }
+                        {usertype==="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to= {`/postedjobs/${userId}`} >view posted jobs</Link> </li>
+                        <li  className="w-full h-0.5 bg-white " ></li></>}
+                        <li className=" rounded-lg  mr-3  text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" onClick={handleLogout} >Logout</li>
                       </ul>
                     </div>
               ):(<></>)}

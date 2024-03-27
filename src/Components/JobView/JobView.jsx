@@ -2,7 +2,7 @@ import React from 'react'
 import company from "../../assets/companylogo.png";
 import country from '../../assets/country.png'
 import { Link } from "react-router-dom";
-const JobView = ({job}) => {
+const JobView = ({job,link}) => {
   
   return (
   job? <main className="flex w-11/12  mx-16 my-auto mt-8 mb-8  shadow-lg hover:shadow-rose-500 rounded-sm pt-3 pb-3 md:mx-8 lg:mx-12 xs:mx-4 xs:p-2 xs:w-11/12 ">
@@ -11,11 +11,11 @@ const JobView = ({job}) => {
     <div className="flex gap-96 md:gap-24 lg:gap-48 mx:gap-36 xs:flex-col xs:gap-8 " >
     <div className="flex gap-4 lg:gap-4 md:gap-0 xs:gap-2 " >
       <div className="pl-2 pt-2 " >
-        <img src={company} width="80%" height="100%"  alt="" />
+        <img src={job.logoUrl?job.logoUrl:company} width="40px" height="40px"  alt="" />
       </div>
      
       <section className="flex flex-col gap-2 items-start  " >
-        <h1 className="font-medium text-xl text-black" >{job.JobPosition}</h1>
+        <h1 className="font-medium text-xl text-black" >{job?.JobPosition}</h1>
         <section className="flex gap-3 xs:gap-2 " >
 
         <div className="flex gap-2 items-center xs:gap-1 "  >
@@ -57,34 +57,34 @@ const JobView = ({job}) => {
               fill="#9C9C9C"
             />
           </svg>
-          <h1 className="font-medium text-base xs:text-sm">{job.MonthlySalary}</h1>
+          <h1 className="font-medium text-base xs:text-sm">{job?.MonthlySalary}</h1>
         </div>
         <div className="flex gap-2 items-center xs:gap-1"  >
           <img src={country} alt="" />
-          <h1 className="font-medium text-base xs:text-sm " >{job.Location}</h1>
+          <h1 className="font-medium text-base xs:text-sm " >{job?.Location}</h1>
         </div>
         </section>
         <div className="flex gap-2"  >
-          <h1 className="font-medium text-sm text-red-600" >{job.LocationType}</h1>
-          <h1 className="font-medium text-sm text-red-600" >{job.JobType}</h1>
+          <h1 className="font-medium text-sm text-red-600" >{job?.LocationType}</h1>
+          <h1 className="font-medium text-sm text-red-600" >{job?.JobType}</h1>
         </div>
       </section>
       </div>
       <section className="flex flex-col gap-3 pl-2 items-end" >
           <div className="grid grid-cols-4 gap-2 pr-2  xs:grid-cols-3 xs:pr-0 md:grid-cols-3 " >
-            {job.Skills.map((item, i)=>(
+            {job?.Skills?.map((item, i)=>(
               <h1 key={i} className="bg-red-200 text-black font-medium text-base text-center p-1 rounded-sm" >{item}</h1>
             ))}
               
           </div>
           <div className="w-36 rounded bg-red-500 px-2 py-2 mr-2 text-center xs:px-1 xs:py-1 ">
              
-              <Link to={`job-details/${job._id}` } className=" font-medium text-xl text-white xs:text-lg " >View Details</Link>
+              <Link to={`${link}${job?._id}` } className=" font-medium text-xl text-white xs:text-lg " >View Details</Link>
           </div>
       </section>
       </div>
   
-  </main>:<h1 className="text-center text-3xl mt-3 font-bold " > JobDetail Not Found</h1>
+  </main>:<div style={{ margin:'0 auto', marginTop:'125px' }} className="w-12 h-12 border-8 rounded-full border-gray-300 border-t-sky-700 animate-spin " > </div>
     
   )
 }

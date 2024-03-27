@@ -8,25 +8,30 @@ import { RegisterUser } from "../../Apis/Auth";
 const Register = () => {
   
   const [UserDetails , setUserDetails] = useState({
-    name:'', email:'', mobile:'' , password:''
+    name:'', email:'', mobile:'' , password:'',usertype:''
   })
   const [error , setError] = useState("Something went Wrong")
+  const [loading ,setLoading] = useState(false)
   const navigate = useNavigate()
   const HandleChange =(e)=>{
       setUserDetails({...UserDetails,[e.target.name]:e.target.value})
   }
 
   const HandleSubmit = async ()=>{
-    if(!UserDetails.name || !UserDetails.email || !UserDetails.mobile || !UserDetails.password ){
+    setLoading(true)
+    if(!UserDetails.name || !UserDetails.email || !UserDetails.mobile || !UserDetails.password || !UserDetails.usertype ){
       toast.error("Fields can't be empty",{position:"top-center"})
+      setLoading(false)
       return
     }
     const responce = await RegisterUser({...UserDetails},setError)
     if(!responce){
       toast.error(error,{position:"top-center"})
+      setLoading(false)
       return
     }
     toast.success(responce.message,{position:"top-center"})
+    setLoading(false)
     setTimeout(() => {
       navigate('/login')
     }, 2000);
@@ -74,12 +79,43 @@ const Register = () => {
               placeholder="Password"
               onChange={HandleChange}
             />
+             <div className="flex flex-row justify-between gap-10 xs:justify-between md:justify-between lg:justify-between ">
+              <label htmlFor="" className="xl:w-3/12 text-2xl font-medium xs:text-xl xss:w-3/12 ">
+               User-type
+              </label>
+              <select
+                name="usertype"
+                id=""
+                className="w-40 rounded border-2 text-slate-600 h-10 text-lg text-center font-medium  "
+                value={UserDetails.usertype}
+                onChange={HandleChange}
+              >
+                <option
+                  className="text-slate-600 h-8 p-2 text-base text-center font-medium"
+                  value=""
+                >
+                  select
+                </option>
+                <option
+                  className="text-slate-600 h-8 p-2 text-base text-center font-medium"
+                  value="JobSeeker"
+                >
+                 JobSeeker
+                </option>
+                <option
+                  className="text-slate-600 h-8 p-2 text-base text-center font-medium"
+                  value="Recruiter"
+                >
+                  Recruiter
+                </option>
+              </select>
+            </div>
 
             <button
-              className="w-72 bg-red-500 font-bold text-white text-3xl rounded p-4 xs:w-44 xs:text-2xl xs:p-2 cursor-pointer "
+              className="w-72 bg-red-500 font-bold text-white text-3xl rounded p-4 xs:w-48 xs:text-2xl xs:p-2 cursor-pointer "
               onClick={HandleSubmit}
             >
-              Create Account
+              {loading ? <div style={{ margin:'0 auto'}} className="w-8 h-8 border-4 rounded-full border-gray-300 border-t-sky-700 animate-spin " ></div>:"Create Account"}
             </button>
           </div>
           <div className="my-3 ">
@@ -89,7 +125,8 @@ const Register = () => {
                 to="/login"
                 className="text-black underline cursor-pointer "
               >
-                Sign In
+                Sign in
+                
               </Link>
             </p>
           </div>

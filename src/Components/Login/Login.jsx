@@ -10,29 +10,36 @@ const Login = () => {
      email:'' , password:''
   })
   const [error , setError] = useState("Something went Wrong")
+  const [loading, setLoading] = useState(false)
   const navigate= useNavigate()
   const HandleFormChange =(e)=>{
     setUserDetails({...UserDetails,[e.target.name]:e.target.value})
   }
   const HandleSubmit = async ()=>{
+    setLoading(true)
     if( !UserDetails.email && !UserDetails.password ){
       toast.error("Fields can't be empty",{position:"top-center"})
+      setLoading(false)
       return
     }else if(!UserDetails.email){
       toast.error("Email field require",{position:"top-center"})
+      setLoading(false)
       return
     }else if(!UserDetails.password){
       toast.error("Password field require",{position:"top-center"})
+      setLoading(false)
       return
     }
     const responce = await LoginUser({...UserDetails},setError)
     
     if(!responce){
       toast.error(error,{position:"top-center"})
+      setLoading(false)
       return
     }
     
     toast.success(responce.message,{position:"top-center"})
+    setLoading(false)
     setTimeout(() => {
       navigate('/')
     }, 2000);
@@ -70,7 +77,7 @@ const Login = () => {
               className="w-64 bg-red-500 font-bold text-white text-3xl rounded p-4 xs:w-44 xs:text-2xl xs:p-2 cursor-pointer "
               onClick={HandleSubmit}
             >
-              Sign in
+              {loading ? <div style={{ margin:'0 auto'}} className="w-8 h-8 border-4 rounded-full border-gray-300 border-t-sky-700 animate-spin " ></div>:"Sign in"}
             </button>
           </div>
           <div className="my-3 ">
