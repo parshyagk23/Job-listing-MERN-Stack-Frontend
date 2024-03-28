@@ -9,7 +9,8 @@ export const CreateAppliedJob =async (jobId,jobDetails)=>{
         axios.defaults.headers.common['Authorization']=token
         const reqUrl = `${AppliedJobUrl}/createjobapplied`
         const responce = await axios.post(reqUrl,{jobId,jobDetails})
-        return await responce.data
+        
+        return  responce.data
         
     } catch (error) {
         

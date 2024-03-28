@@ -25,7 +25,8 @@ const JobDetails = () => {
   }, []);
   useEffect(()=>{
     fetisJobApplied()
-  },)
+  },[])
+ 
 
   const fetchJobDetailsById = async () => {
     try {
@@ -53,6 +54,7 @@ const JobDetails = () => {
       }
       
       const AppliedJobs= responce.data
+      
       if(isLoggedIn){
 
         AppliedJobs.map((jobs)=>{
@@ -99,11 +101,12 @@ const JobDetails = () => {
   };
   const handleApplyJob = async () => {    
     const responce = await CreateAppliedJob(Jobdetail._id, Jobdetail);
-    
+   
     if(!responce){
       toast.error('Job Already Applied', {position:'top-center'})
       return
     }
+    setisApplied(true)
     toast.success(responce.message, { position: "top-center" });
     
   };
