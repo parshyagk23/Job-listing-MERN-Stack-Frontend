@@ -1,13 +1,15 @@
 import React,{ useEffect, useState } from 'react'
 import Navbar from '../NavBar/Navbar'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getJobPostbyrefUserId } from '../../Apis/Job';
 import JobView from '../JobView/JobView';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const PostedJobs = () => {
     const {refuserid}= useParams()
     const [PostedJobs, setPostedJobs] = useState();
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
     useEffect(() => {
         fetchPostedjobs();
       }, []);
@@ -16,8 +18,16 @@ const PostedJobs = () => {
           setLoading(false);
           if (!refuserid) return;
           const responce = await getJobPostbyrefUserId(refuserid);
+          
+          if(!responce){
+            
+            setTimeout(() => {
+              navigate('/login')
+            }, 2000);
+            return
+          }
           setLoading(true);
-          setPostedJobs(responce.data);
+          setPostedJobs(responce?.data);
           
         } catch (error) {
           console.log(error);
@@ -48,6 +58,7 @@ const PostedJobs = () => {
         {" "}
       </div>
     )}
+    <ToastContainer/>
   </div>
     
   )

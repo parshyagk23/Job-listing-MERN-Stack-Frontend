@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Navigate } from "react-router-dom";
+
 import { toast } from "react-toastify";
 const JobBackendURL = import.meta.env.VITE_REACT_APP_JOB_BACKEND_URL
 
@@ -14,15 +14,15 @@ export const CreatejobPost =  async (jobPostPayload)=>{
         
         
     } catch (error) {
-       
-      if(error.response.data.isTokenExpired){
+        console.log(error)
+      if(error.response.data.errormessage=== "Unauthorized access!" || error.response.data.isTokenExpired){
             Cookies.remove('token')
             Cookies.remove('userName')
             Cookies.remove('userId')
-            setTimeout(() => {
-                toast.error("session expired please login" ,{position:'top-center'} )
-            }, 2000);
-            Navigate('/login')
+            toast.error("invalid token or  session expired please login" ,{position:'top-center'} )
+            
+            
+           
 
 
       }
@@ -32,15 +32,20 @@ export const getJobPost =  async (jobid)=>{
     try {
         const reqUrl = `${JobBackendURL}/job-details/${jobid}`
         const token = Cookies.get('token')
-        
         axios.defaults.headers.common['Authorization']=token
         const responce= await axios.get(reqUrl)
         return responce.data
         
-        
     } catch (error) {
-        error
+        if(error.response.data.errormessage=== "Unauthorized access!" || error.response.data.isTokenExpired){
+            Cookies.remove('token')
+            Cookies.remove('userName')
+            Cookies.remove('userId')
+            toast.error("invalid token or  session expired please login" ,{position:'top-center'} )
+          
+      }
     }
+    
 }
 
 export const updateJobPost = async(jobid, updatedFormData,userid) =>{
@@ -55,7 +60,15 @@ export const updateJobPost = async(jobid, updatedFormData,userid) =>{
         })
         return responce.data
     } catch (error) {
-        error
+        console.log(error)
+        if(error.response.data.errormessage=== "Unauthorized access!" || error.response.data.isTokenExpired ){
+            Cookies.remove('token')
+            Cookies.remove('userName')
+            Cookies.remove('userId')
+            toast.error("invalid token or  session expired please login" ,{position:'top-center'} )
+           
+            
+      }
         
     }
 }
@@ -88,6 +101,15 @@ export const getJobPostbyrefUserId =  async (refUserId)=>{
         
         
     } catch (error) {
-        error
+        
+        if(error.response.data.errormessage=== "Unauthorized access!" || error.response.data.isTokenExpired ){
+            Cookies.remove('token')
+            Cookies.remove('userName')
+            Cookies.remove('userId')
+            toast.error("invalid token or  session expired please login" ,{position:'top-center'} )
+            
+      }
+
+      
     }
 }

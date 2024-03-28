@@ -96,7 +96,9 @@ const JobPost = () => {
       }
       const responce = await CreatejobPost(formData)
       if(!responce){
-        toast.error("Something went wrong",{position:"top-center"})
+          setTimeout(() => {
+            navigate('/login')
+          }, 2000);
         return
       }
       toast.success("Job create successfully",{position:"top-center"})
@@ -104,6 +106,7 @@ const JobPost = () => {
         navigate('/')
       }, 2000);
     }catch(error){
+      console.log(error)
       toast.error("Something went wrong",{position:"top-center"})
     }
     }

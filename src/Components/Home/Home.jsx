@@ -23,24 +23,29 @@ const Home = () => {
     }
 
     const handleApplyFilter =async ()=>{
-      setLoading(true)
-      if(!Skill && !title){
-        toast.error("Feild's can't be empty",{position:"top-center"})
-        return
-      }
-      
-      const filteredSkill = Skill.join(",")
-      const responce = await getAllJobPost({title,skill:filteredSkill});
-      
-      if(!responce){
-        toast.error("Job not found or CONNECTION_ERROR ",{position:"top-center"})
+      try {
+        
+        setLoading(true)
+        if(!Skill && !title){
+          toast.error("Feild's can't be empty",{position:"top-center"})
+          return
+        }
+        
+        const filteredSkill = Skill.join(",")
+        const responce = await getAllJobPost({title,skill:filteredSkill});
+        
+        if(!responce){
+          toast.error("Job not found or CONNECTION_ERROR ",{position:"top-center"})
+          setLoading(false)
+          return
+        }
+        
+        setJobDetail(responce.data)
         setLoading(false)
-        return
+        
+      } catch (error) {
+        console.log(error)
       }
-      
-      setJobDetail(responce.data)
-      setLoading(false)
-      
     }
     const handleClear =()=>{
       setSkills([])

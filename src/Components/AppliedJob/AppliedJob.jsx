@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../NavBar/Navbar";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getAppliedJob } from "../../Apis/AppliedJob";
 import JobView from "../JobView/JobView";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,6 +10,7 @@ const AppliedJob = () => {
   const { userId } = useParams();
   const [AppliedJob, setAppliedJob] = useState();
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
   useEffect(() => {
     fetchAllAppliedJob();
   }, []);
@@ -18,9 +19,16 @@ const AppliedJob = () => {
       setLoading(false);
       if (!userId) return;
       const responce = await getAppliedJob(userId);
+      if(!responce){
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000);
+        return
+      }
       setLoading(true);
-      setAppliedJob(responce.data);
+      setAppliedJob(responce?.data);
     } catch (error) {
+      console.log(error)
       toast.error("Something went wrong" ,{position:'top-center'})
     }
   };

@@ -32,6 +32,12 @@ const JobDetails = () => {
     try {
       if (!id) return;
       const responce = await getJobPost(id);
+      if(!responce){
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000);
+        return
+      }
       setJobdetails(responce.data);
       setIsEditable(responce.isEditable);
       setisJobPost(responce.isJobPost)
@@ -49,7 +55,12 @@ const JobDetails = () => {
       }
       const responce = await getAppliedJob(userId)
       if(!responce){
-        toast.error("Something wend wrong", { position: "top-center" });
+        toast.error("Something wend wrong please login", { position: "top-center" });
+      
+          setTimeout(() => {
+            navigate('/login')
+          }, 2000);
+        
         return
       }
       
@@ -67,6 +78,7 @@ const JobDetails = () => {
       }
       
     } catch (error) {
+      console.log(error)
         toast.error("Something wend wrong", { position: "top-center" });
         
       }
