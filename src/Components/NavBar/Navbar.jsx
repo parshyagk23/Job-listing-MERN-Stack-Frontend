@@ -47,7 +47,7 @@ const Navbar = () => {
           </div>
         ) : (
           <div>
-            <div className="flex justify-end mr-2 cursor-pointer " title={Cookies.get('userName')} onClick={()=>{setisuserLogoClicked((prev)=>!prev)}} >
+            <div className="flex justify-end mr-2 cursor-pointer xs:-mt-2 " title={Cookies.get('userName')} onClick={()=>{setisuserLogoClicked((prev)=>!prev)}} >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="65"
