@@ -42,6 +42,7 @@ const Login = () => {
     setLoading(false)
     setTimeout(() => {
       navigate('/')
+      window.location.reload()
     }, 2000);
   }
   console.log()

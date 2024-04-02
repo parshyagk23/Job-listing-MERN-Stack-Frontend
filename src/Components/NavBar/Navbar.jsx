@@ -18,6 +18,7 @@ const Navbar = () => {
     toast.success("logout Successfully", { position: "top-center" });
     setTimeout(() => {
       navigate("/login");
+      
     }, 2000);
   };
 
