@@ -64,12 +64,15 @@ const Navbar = () => {
                         <li className=" rounded-lg mr-3 mb-2 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-lg xs:mr-0" >
                         <Link to='/' >{Cookies.get('userName')}</Link></li>
                         <li  className="w-full h-0.5 bg-white " ></li>
-                        {usertype==="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to='/job-post' >Post job</Link> </li>
-                        <li  className="w-full h-0.5 bg-white " ></li></>}
-                        {usertype!=="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to= {`/applied-job/${userId}`} >Applied jobs</Link> </li>
+                        {usertype==="Recruiter" && 
+                        <>
+                          <li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <a onClick={()=>{navigate("/job-post")}}  >Post job</a> </li>
+                          <li className="w-full h-0.5 bg-white " ></li>
+                          <li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <a onClick={()=>{navigate(`/postedjobs/${userId}`)}} >view posted jobs</a> </li>
+                          <li className="w-full h-0.5 bg-white " ></li>
+                        </> }
+                        {usertype!=="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <a onClick={()=>{navigate(`/applied-job/${userId}`)}}  >Applied jobs</a> </li>
                         <li  className="w-full h-0.5 bg-white " ></li></> }
-                        {usertype==="Recruiter" && <><li className="  border-white mb-2 bottom-2 mr-3 text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" > <Link to= {`/postedjobs/${userId}`} >view posted jobs</Link> </li>
-                        <li  className="w-full h-0.5 bg-white " ></li></>}
                         <li className=" rounded-lg  mr-3  text-gray-800 font-medium text-2xl text-center cursor-pointer xs:text-xl xs:mr-0" onClick={handleLogout} >Logout</li>
                       </ul>
                     </div>
