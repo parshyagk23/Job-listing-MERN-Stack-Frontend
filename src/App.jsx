@@ -22,7 +22,7 @@ function App() {
         <Route path="/job-details/:id" element={<JobDetailsPage />} />
         {usertype!=="Recruiter" && <Route path="/applied-job/:userId" element={<ProtectedRoute Component={AppliedJobPage} />} />}
         {usertype==="Recruiter" && <Route path="/postedjobs/:refuserid" element={<ProtectedRoute Component={PostedJobsPage} />} />}
-        <Route path="*" element={<h1 style={{margin:"0 auto", marginTop:'30px' }} className="w-2/5 text-center font-bold text-4xl xs:text-2xl xs:w-64 " >404 Page Not Found</h1>} />
+        <Route path="*" render={() =>{<h1 style={{margin:"0 auto", marginTop:'30px' }} className="w-2/5 text-center font-bold text-4xl xs:text-2xl xs:w-64 " >404 Page Not Found</h1>} }/>
       </Routes>
         
     </>
